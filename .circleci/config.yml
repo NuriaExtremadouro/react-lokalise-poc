@@ -14,9 +14,6 @@ jobs:
       - image: circleci/node:16.10
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
-          node-version: '9.5.0'
-      - run: yarn
-      - run: yarn build
-      - run: yarn test
+      - run: npm install
+      - run: npm run build
+      - run: npm run test
