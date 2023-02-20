@@ -1,0 +1,15 @@
+{
+    "formatDate.title": "Formato de fechas",
+    "formatDate.description1": "Cuando cambiamos de lenguaje, también se cambia el formato de las fechas. Prueba a cambiar de inglés a español y obseva como pasa de MM\/DD\/YYYY a DD\/MM\/YYYY. Fíjate en la siguiente fecha:",
+    "formatDate.description2": "También podríamos ver la fecha en formato textual:",
+    "formatMessage.title": "Traducción de textos",
+    "formatMessage.description1": "Cuando cambiamos de lenguaje, las traducciones son leídas del diccionario correspondiente. Fíjate en el texto de estos botones:",
+    "formatMessage.description2": "También podemos pasar un valor dinámico a una traducción para incluirlo dentro del mismo texto. Por ejemplo, rellena este input y fíjate en cómo cambia la traducción inferior.",
+    "formatMessage.description3": "Podríamos pasar de forma dinámica una fecha y darle el formato adecuado. O, añadiendo un tercer parámetro dentro de la traducción del diccionario, indicar una moneda (p.ej. \"::currency\/USD\").",
+    "formatMessage.accept": "Aceptar",
+    "formatMessage.cancel": "Cancelar",
+    "formatMessage.parsedNumber": "¡Establecido valor {n, number}!",
+    "formatPluralization.title": "Pluralización",
+    "formatPluralization.description1": "A veces nos encontramos con palabras que deben cambiar de singular a plural según un parámetro dinámico. Para estos casos, podemos definir un formato que muestre variaciones de la misma palabra según el valor dinámico recibido. Por ejemplo:",
+    "formatPluralization.pluralizationNumber": "Tienes {n, plural, one {# producto} other {# productos}}."
+}

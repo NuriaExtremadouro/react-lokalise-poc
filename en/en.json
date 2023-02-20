@@ -1,0 +1,15 @@
+{
+    "formatDate.title": "Formatting a date",
+    "formatDate.description1": "Note that when we change the language, we also change the format of the date. Try changing between English and Spanish and notice how it goes from MM\/DD\/YYYY to DD\/MM\/YYYY. Check the following date:",
+    "formatDate.description2": "We could also visualize it written in a text format:",
+    "formatMessage.title": "Translating texts",
+    "formatMessage.description1": "When we choose a different language from the dropdown, the texts will be picked from the right dictionary. Look at these buttons:",
+    "formatMessage.description2": "We can also pass a value to a translation to include it within the text. For example, fill this input and look at the string below changing:",
+    "formatMessage.description3": "We could also pass a date and indicate that format. Or add a third field inside the dictionary file to indicate a currency like \"::currency\/USD\".",
+    "formatMessage.accept": "Accept",
+    "formatMessage.cancel": "Cancel",
+    "formatMessage.parsedNumber": "Value {n, number} set!",
+    "formatPluralization.title": "Pluralization",
+    "formatPluralization.description1": "Sometimes we have words that should be singular or plurar depending on a dynamic value. If we want to avoid the classic \"(s)\" in parenthesis as a \"just in case\" we can define a format for singular\/plurar values. For example:",
+    "formatPluralization.pluralizationNumber": "You have {n, plural, one {# product} other {# products}}."
+}
