@@ -11,12 +11,12 @@ workflows:
 jobs:
   build:
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:16.10
     steps:
       - checkout
       - node/install:
           install-yarn: true
-          node-version: '16.10'
+          node-version: '9.5.0'
       - run: yarn
       - run: yarn build
       - run: yarn test
