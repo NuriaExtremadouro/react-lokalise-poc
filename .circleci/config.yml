@@ -6,10 +6,10 @@ orbs:
 workflows:
   pull-request:
     jobs:
-      - build
+      - build-and-test
 
 jobs:
-  build:
+  build-and-test:
     docker:
       - image: circleci/node:16.10
     steps:
