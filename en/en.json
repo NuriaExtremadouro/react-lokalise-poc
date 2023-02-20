@@ -1,15 +1,15 @@
 {
-    "formatDate.title": "Formatting a date",
-    "formatDate.description1": "Note that when we change the language, we also change the format of the date. Try changing between English and Spanish and notice how it goes from MM\/DD\/YYYY to DD\/MM\/YYYY. Check the following date:",
-    "formatDate.description2": "We could also visualize it written in a text format:",
+    "formatDate.title": "Formatting dates",
+    "formatDate.description1": "When we change the language, it also changes the format of the dates. Try changing from English to Spanish and check how it changes from MM\/DD\/YYYY to DD\/MM\/YYYY. Look at the following date:",
+    "formatDate.description2": "We could also visualize the date in text format:",
     "formatMessage.title": "Translating texts",
-    "formatMessage.description1": "When we choose a different language from the dropdown, the texts will be picked from the right dictionary. Look at these buttons:",
-    "formatMessage.description2": "We can also pass a value to a translation to include it within the text. For example, fill this input and look at the string below changing:",
-    "formatMessage.description3": "We could also pass a date and indicate that format. Or add a third field inside the dictionary file to indicate a currency like \"::currency\/USD\".",
+    "formatMessage.description1": "When we change the languages, translations are read from the corresponding dictionary. Look at the text of these buttons:",
+    "formatMessage.description2": "We could also pass a dynamic value to a translation to include it within the text itself. For example, fill this input and see how the translation below changes.",
+    "formatMessage.description3": "It's possible to pass a date dynamically and give it the right format. Or, by adding a third parameter in the dictionary translation, indicate a currency (e.g. \"::currency\/USD\").",
     "formatMessage.accept": "Accept",
     "formatMessage.cancel": "Cancel",
     "formatMessage.parsedNumber": "Value {n, number} set!",
     "formatPluralization.title": "Pluralization",
-    "formatPluralization.description1": "Sometimes we have words that should be singular or plurar depending on a dynamic value. If we want to avoid the classic \"(s)\" in parenthesis as a \"just in case\" we can define a format for singular\/plurar values. For example:",
+    "formatPluralization.description1": "Sometimes we have words that need to change from singular to plural depending on a dynamic parameter. For these scenarios, we can define a format that shows variations of the same word depending on the received dynamic value. For example:",
     "formatPluralization.pluralizationNumber": "You have {n, plural, one {# product} other {# products}}."
 }
