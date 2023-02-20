@@ -6,10 +6,17 @@ orbs:
 workflows:
   pull-request:
     jobs:
-      build:
-        steps:
-          - checkout
-          - node/install:
-              install-yarn: true
-              node-version: '16.10'
-          - run: yarn build
+      - build
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:16.10
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+          node-version: '16.10'
+      - run: yarn
+      - run: yarn build
+      - run: yarn test
