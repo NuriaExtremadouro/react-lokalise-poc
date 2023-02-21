@@ -3,17 +3,220 @@ version: 2.1
 orbs:
   node: circleci/node@4.7
 
-workflows:
-  pull-request:
-    jobs:
-      - build-and-test
-
-jobs:
-  build-and-test:
+executors:
+  nodejs:
     docker:
       - image: circleci/node:16.10
+
+workflows:
+  master:
+    when:
+      equal: [ master, << pipeline.git.branch >> ]
+    jobs:
+      - install
+          workspace: main-pipe
+      #- lint
+      #    workspace: main-pipe
+      - unit-test
+          workspace: main-pipe
+          requires:
+            - install
+      - build
+          workspace: main-pipe
+          requires:
+            #- lint
+            - unit-test
+      #- deploy
+  pull-reques:
+    when:
+      not: equal: [ master, << pipeline.git.branch >> ]
+    jobs:
+      - install
+          workspace: main-pipe
+      #- lint
+      #    workspace: main-pipe
+      - unit-test
+          workspace: main-pipe
+          requires:
+            - install
+      - build
+          workspace: main-pipe
+          requires:
+            #- lint
+            - unit-test
+      - automerge
+          filters:
+            branches:
+              only:
+                - /^lokalise-[\d|\-|_]+$/
+          requires:
+            - build
+
+jobs:
+  install:
+    executor: nodejs
+    parameters:
+      workspace:
+        type: string
     steps:
       - checkout
-      - run: npm install
-      - run: npm run build
-      - run: npm run test
+      - restore_yarn_cache:
+          workspace: << parameters.workspace >>
+      - run:
+          name: yarn install
+          working_directory: workspaces/<< parameters.workspace >>
+          command: yarn install
+      - save_yarn_cache:
+          workspace: << parameters.workspace >>
+#  lint:
+#    executor: nodejs
+#    parameters:
+#      workspace:
+#        type: string
+#    steps:
+#      - checkout
+#      - restore_yarn_cache:
+#          workspace: << parameters.workspace >>
+#      - run:
+#          name: lint
+#          working_directory: workspaces/<< parameters.workspace >>
+#          command: yarn lint
+#      - save_lint_cache:
+#          workspace: << parameters.workspace >>
+  unit-test:
+    executor: nodejs
+    parameters:
+      workspace:
+        type: string
+    steps:
+      - checkout
+      - restore_yarn_cache:
+          workspace: << parameters.workspace >>
+      - run:
+          name: unit test
+          working_directory: workspaces/<< parameters.workspace >>
+          command: yarn test
+      - save_test_cache:
+          workspace: << parameters.workspace >>
+  build:
+    executor: nodejs
+    parameters:
+      workspace:
+        type: string
+    steps:
+      - checkout
+      - restore_yarn_cache:
+          workspace: << parameters.workspace >>
+      - run:
+          name: build
+          working_directory: workspaces/<< parameters.workspace >>
+          command: yarn build
+      - save_build_cache:
+          workspace: << parameters.workspace >>
+#  deploy:
+#    executor: nodejs
+#    parameters:
+#      workspace:
+#        type: string
+#    steps:
+#      - checkout
+#      - restore_build_cache_fe:
+#          workspace: << parameters.workspace >>
+#      - run:
+#          name: deploy
+#          working_directory: workspaces/<< parameters.workspace >>
+#          command: yarn deploy
+#  automerge:
+#    executor: nodejs
+#    steps:
+#      - checkout
+#      - add_ssh_keys:#*some_ref # TODO: not very clear, but some_ref might be fingerprints (aa:bb:cc...)
+#        ssh_keys:
+#          fingerprints:
+#            - "aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp"
+#      - run: ci-automerge
+
+commands:
+  save_yarn_cache:
+    parameters:
+      workspace:
+        type: string
+    steps:
+      - save_cache:
+          name: save node_modules
+          key: yarn-cache-v5-<< parameters.workspace >>-{{ checksum "workspaces/<< parameters.workspace >>/yarn.lock" }}
+          paths:
+            - workspaces/<< parameters.workspace >>/node_modules
+  restore_yarn_cache: # TODO: it might be possible to reuse easily by putting a &yarn_cache_params in line 138 and a *yarn_cache_params here
+      workspace:
+        type: string
+    steps:
+      - restore_cache:
+          name: restore node_modules
+          keys:
+            - yarn-cache-v5-<< parameters.workspace >>-{{ checksum "workspaces/<< parameters.workspace >>/yarn.lock" }}
+  save_build_cache:
+    parameters:
+      workspace:
+        type: string
+    steps:
+      - persist_to_workspace: # // TODO: it might be possible to keep it simple like the previous pair of jobs
+          root: workspaces/<< parameters.workspace >>
+          paths:
+            - "src/utils/environment/__generated-configuration.ts"
+      - save_cache:
+          name: save build artifact
+          key: build-cache-v5-<< parameters.workspace >>-{{ checksum "workspaces/<< parameters.workspace >>/yarn.lock" }}
+          paths:
+            - workspaces/<< parameters.workspace >>/build
+            - workspaces/<< parameters.workspace >>/dist
+  restore_build_cache:
+    parameters:
+      workspace:
+        type: string
+    steps:
+      - attach_workspace:
+          at: workspaces/<< parameters.workspace >>
+      - restore_cache:
+          keys:
+            - build-cache-v5-<< parameters.workspace >>-{{ checksum "workspaces/<< parameters.workspace >>/src/utils/environment/__generated-configuration.ts" }} # TODO: the checksum might not be necessary
+  save_test_cache:
+    parameters:
+      workspace:
+        type: string
+    steps:
+      - persist_to_workspace:
+          name: save test artifacts
+          root: ./
+          paths:
+            - workspaces/<< parameters.workspace >>/coverage-*
+  restore_test_cache:
+    parameters:
+      workspace:
+        type: string
+    steps:
+      - attach_workspace:
+          at: ./
+  save_lint_cache:
+    parameters:
+      workspace:
+        type: string
+    steps:
+      - save_cache:
+          key: lint-cache-v5-<< parameters.workspace >>
+          paths: # TODO: it might be possible to use "path" if it's only one, and the same for "keys"
+            - workspaces/<< parameters.workspace >>/lint-coverage/lint-report.json
+  restore_lint_cache:
+    parameters:
+      workspace:
+        type: string
+    steps:
+      - restore_cache:
+          keys:
+            - lint-cache-v5-<< parameters.workspace >>
+
+# TODO: might be useful for the commands
+#references:
+#  workspace_param: &workspace_param_ref
+#    workspace:
+#      type: string
