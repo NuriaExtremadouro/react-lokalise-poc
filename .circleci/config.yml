@@ -13,45 +13,44 @@ workflows:
     when:
       equal: [ master, << pipeline.git.branch >> ]
     jobs:
-      - install
+      - install:
           workspace: main-pipe
-      #- lint
+      #- lint:
       #    workspace: main-pipe
-      - unit-test
+      - unit-test:
           workspace: main-pipe
           requires:
             - install
-      - build
+      - build:
           workspace: main-pipe
           requires:
             #- lint
             - unit-test
-      #- deploy
-  pull-reques:
+  pull-request:
     when:
-      not: equal: [ master, << pipeline.git.branch >> ]
+      not:
+        equal: [ master, << pipeline.git.branch >> ]
     jobs:
-      - install
+      - install:
           workspace: main-pipe
       #- lint
       #    workspace: main-pipe
-      - unit-test
+      - unit-test:
           workspace: main-pipe
           requires:
             - install
-      - build
+      - build:
           workspace: main-pipe
           requires:
             #- lint
             - unit-test
-      - automerge
-          filters:
-            branches:
-              only:
-                - /^lokalise-[\d|\-|_]+$/
-          requires:
-            - build
-
+      #- automerge:
+      #    filters:
+      #      branches:
+      #        only:
+      #          - /^lokalise-[\d|\-|_]+$/
+      #    requires:
+      #      - build
 jobs:
   install:
     executor: nodejs
@@ -130,10 +129,10 @@ jobs:
 #    executor: nodejs
 #    steps:
 #      - checkout
-#      - add_ssh_keys:#*some_ref # TODO: not very clear, but some_ref might be fingerprints (aa:bb:cc...)
-#        ssh_keys:
-#          fingerprints:
-#            - "aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp"
+#      - add_ssh_keys:
+#          ssh_keys:
+#              fingerprints:
+#                - "aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp"
 #      - run: ci-automerge
 
 commands:
@@ -148,6 +147,7 @@ commands:
           paths:
             - workspaces/<< parameters.workspace >>/node_modules
   restore_yarn_cache: # TODO: it might be possible to reuse easily by putting a &yarn_cache_params in line 138 and a *yarn_cache_params here
+    parameters:
       workspace:
         type: string
     steps:
