@@ -59,6 +59,7 @@ jobs:
         type: string
     steps:
       - checkout
+      - run: mkdir -p << parameters.workspace >>
       - restore_yarn_cache:
           workspace: << parameters.workspace >>
       - run:
