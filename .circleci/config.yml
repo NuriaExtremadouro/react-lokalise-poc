@@ -143,10 +143,10 @@ commands:
     steps:
       - save_cache:
           name: save node_modules
-          key: yarn-cache-v5-<< parameters.workspace >>-{{ checksum "workspaces/<< parameters.workspace >>/yarn.lock" }}
+          key: yarn-cache-v5-<< parameters.workspace >>-yarn-cache
           paths:
             - workspaces/<< parameters.workspace >>/node_modules
-  restore_yarn_cache: # TODO: it might be possible to reuse easily by putting a &yarn_cache_params in line 138 and a *yarn_cache_params here
+  restore_yarn_cache:
     parameters:
       workspace:
         type: string
@@ -154,19 +154,15 @@ commands:
       - restore_cache:
           name: restore node_modules
           keys:
-            - yarn-cache-v5-<< parameters.workspace >>-{{ checksum "workspaces/<< parameters.workspace >>/yarn.lock" }}
+            - yarn-cache-v5-<< parameters.workspace >>-yarn-cache
   save_build_cache:
     parameters:
       workspace:
         type: string
     steps:
-      - persist_to_workspace: # // TODO: it might be possible to keep it simple like the previous pair of jobs
-          root: workspaces/<< parameters.workspace >>
-          paths:
-            - "src/utils/environment/__generated-configuration.ts"
       - save_cache:
           name: save build artifact
-          key: build-cache-v5-<< parameters.workspace >>-{{ checksum "workspaces/<< parameters.workspace >>/yarn.lock" }}
+          key: yarn-cache-v5-<< parameters.workspace >>-build
           paths:
             - workspaces/<< parameters.workspace >>/build
             - workspaces/<< parameters.workspace >>/dist
@@ -175,11 +171,9 @@ commands:
       workspace:
         type: string
     steps:
-      - attach_workspace:
-          at: workspaces/<< parameters.workspace >>
       - restore_cache:
           keys:
-            - build-cache-v5-<< parameters.workspace >>-{{ checksum "workspaces/<< parameters.workspace >>/src/utils/environment/__generated-configuration.ts" }} # TODO: the checksum might not be necessary
+            - yarn-cache-v5-<< parameters.workspace >>-build
   save_test_cache:
     parameters:
       workspace:
@@ -203,8 +197,8 @@ commands:
         type: string
     steps:
       - save_cache:
-          key: lint-cache-v5-<< parameters.workspace >>
-          paths: # TODO: it might be possible to use "path" if it's only one, and the same for "keys"
+          key: lint-cache-v5-<< parameters.workspace >>-lint
+          paths:
             - workspaces/<< parameters.workspace >>/lint-coverage/lint-report.json
   restore_lint_cache:
     parameters:
@@ -213,7 +207,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - lint-cache-v5-<< parameters.workspace >>
+            - lint-cache-v5-<< parameters.workspace >>-lint
 
 # TODO: might be useful for the commands
 #references:
