@@ -37,8 +37,8 @@ workflows:
           #  branches:
           #    only:
           #      - /^lokalise-[\d|\-|_]+$/
-          #requires:
-          #  - build
+          requires:
+            - build
 jobs:
   install:
     executor: nodejs
