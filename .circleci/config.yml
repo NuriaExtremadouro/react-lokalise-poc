@@ -33,12 +33,12 @@ workflows:
           requires:
             - unit-test
       - automerge-lokalise:
-          filters:
-            branches:
-              only:
-                - /^lokalise-[\d|\-|_]+$/
-          requires:
-            - build
+          #filters:
+          #  branches:
+          #    only:
+          #      - /^lokalise-[\d|\-|_]+$/
+          #requires:
+          #  - build
 jobs:
   install:
     executor: nodejs
