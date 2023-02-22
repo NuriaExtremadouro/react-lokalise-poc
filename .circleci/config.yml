@@ -81,10 +81,17 @@ jobs:
     executor: nodejs
     steps:
       - checkout
-      - run: echo "Right before the SSH step"
-      - add_ssh_keys:
-        ssh_keys:
-          fingerprints:
-            - "aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp"
-      - run: echo "Right before the Git command"
+      - run: echo "Right before the Git step"
       - run: git --version
+      - run: echo "Right before the SSH command"
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:yx9UpwgUqnwl7H/zL/eNAW+TTKLvR1MwX06JwTvS4Ho nuria@Nuria"
+      - run: echo "Right before the Git command"
+      - run:
+          name: Automerge branch
+          command: |
+            git checkout master
+            git pull origin master
+            git merge test
+            git push origin master
