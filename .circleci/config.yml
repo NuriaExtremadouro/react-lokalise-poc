@@ -61,6 +61,9 @@ jobs:
       - checkout
       - run: mkdir -p << parameters.workspace >>
       - run:
+          name: Get directory content
+          command: ls
+      - run:
           name: Install packages
           command: yarn install
       - persist_to_workspace:
