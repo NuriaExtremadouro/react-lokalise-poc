@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import './App.css';
 import { IntlProvider } from 'react-intl';
+
+import './App.css';
+import { CaretDownIcon, InternationalizationIcon } from './assets/icons';
 import IntlDemoPage from './components/IntlDemoPage/IntlDemoPage';
+import LokalisePage from './components/LokalisePage/LokalisePage';
 import { messages } from './i18n/translations';
 import { Locales } from './i18n/locales';
-import { CaretDownIcon, InternationalizationIcon } from './assets/icons';
 
 const App = () => {
   const getLocale = () => ((localStorage.getItem("locale") || navigator.language) as Locales);
@@ -52,7 +54,7 @@ const App = () => {
         </nav>
         <header className="content">
           {page === 'intl' && <IntlDemoPage />}
-          {page === 'lokalise' && <p>Lokalise page</p>}
+          {page === 'lokalise' && <LokalisePage />}
           {page === 'circleci' && <p>CircleCI page</p>}
         </header>
       </div>
