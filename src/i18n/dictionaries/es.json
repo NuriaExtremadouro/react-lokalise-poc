@@ -14,5 +14,12 @@
     "formatPluralization.pluralizationNumber": "Tienes {n, plural, one {# producto} other {# productos}}.",
     "tabs.reactIntl": "React Intl",
     "tabs.lokalise": "Lokalise",
-    "tabs.automation": "Automatización"
+    "tabs.automation": "Automatización",
+    "lokalise.createProject.title": "Creating a Lokalise project",
+    "lokalise.createProject.section1": "Create project",
+    "lokalise.createProject.section2": "Connect to GitHub",
+    "lokalise.createProject.section3": "Utilities",
+    "lokalise.automation.title": "Automation with Lokalise",
+    "lokalise.automation.section1": "Download - Lokalise to GitHub",
+    "lokalise.automation.section2": "Upload - GitHub to Lokalise"
 }
