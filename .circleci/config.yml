@@ -62,7 +62,6 @@ jobs:
       - run:
           name: Directory before installing
           command: ls
-      - run: mkdir -p << parameters.workspace >>
       - run:
           name: Install packages
           command: yarn install
@@ -70,7 +69,7 @@ jobs:
           name: Directory after installing
           command: ls
       - persist_to_workspace:
-          root: << parameters.workspace >>
+          root: ~/
           paths:
             - node_modules
 #  lint:
