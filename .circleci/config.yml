@@ -67,7 +67,7 @@ jobs:
       - persist_to_workspace:
           root: << parameters.workspace >>
           paths:
-            - /install
+            - /
 #  lint:
 #    executor: nodejs
 #    parameters:
@@ -92,6 +92,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: tmp/<< parameters.workspace >>
+      - run:
+          name: Get workspace directory
+          command: ls
       - run:
           name: Run unit test
           command: yarn test
