@@ -7,7 +7,6 @@ executors:
   nodejs:
     docker:
       - image: circleci/node:16.10
-    working_directory: /tmp
 
 workflows:
   master:
