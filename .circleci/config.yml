@@ -62,16 +62,20 @@ jobs:
       - run:
           name: Directory before installing
           command: ls
+      - restore_cache:
+          keys:
+          - node_modules-deps-{{ checksum "package.json" }}
+          - node_modules-deps-
       - run:
           name: Install packages
           command: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: node_modules-deps-{{ checksum "package.json" }}
       - run:
           name: Directory after installing
           command: ls
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - node_modules
 #  lint:
 #    executor: nodejs
 #    parameters:
@@ -94,10 +98,15 @@ jobs:
         type: string
     steps:
       - checkout
-      - attach_workspace:
-          at: tmp/<< parameters.workspace >>
       - run:
-          name: Get workspace directory
+          name: Directory before getting cache
+          command: ls
+      - restore_cache:
+          keys:
+          - node_modules-deps-{{ checksum "package.json" }}
+          - node_modules-deps-
+      - run:
+          name: Directory after getting cache
           command: ls
       - run:
           name: Run unit test
