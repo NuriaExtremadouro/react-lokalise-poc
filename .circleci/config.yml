@@ -59,13 +59,16 @@ jobs:
         type: string
     steps:
       - checkout
-      - run: mkdir -p << parameters.workspace >>
       - run:
-          name: Get directory content
+          name: Directory before installing
           command: ls
+      - run: mkdir -p << parameters.workspace >>
       - run:
           name: Install packages
           command: yarn install
+      - run:
+          name: Directory after installing
+          command: ls
       - persist_to_workspace:
           root: << parameters.workspace >>
           paths:
