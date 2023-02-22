@@ -31,23 +31,19 @@ workflows:
             - install
       - build:
           requires:
-            #- lint
             - unit-test
-      #- automerge:
-      #    filters:
-      #      branches:
-      #        only:
-      #          - /^lokalise-[\d|\-|_]+$/
-      #    requires:
-      #      - build
+      - automerge-lokalise:
+          filters:
+            branches:
+              only:
+                - /^lokalise-[\d|\-|_]+$/
+          requires:
+            - build
 jobs:
   install:
     executor: nodejs
     steps:
       - checkout
-      - run:
-          name: Directory before installing
-          command: ls
       - restore_cache:
           keys:
           - node_modules-deps-{{ checksum "package.json" }}
@@ -59,23 +55,14 @@ jobs:
           paths:
             - node_modules
           key: node_modules-deps-{{ checksum "package.json" }}
-      - run:
-          name: Directory after installing
-          command: ls
   unit-test:
     executor: nodejs
     steps:
       - checkout
-      - run:
-          name: Directory before getting cache
-          command: ls
       - restore_cache:
           keys:
           - node_modules-deps-{{ checksum "package.json" }}
           - node_modules-deps-
-      - run:
-          name: Directory after getting cache
-          command: ls
       - run:
           name: Run unit test
           command: yarn test
@@ -90,3 +77,14 @@ jobs:
       - run:
           name: Build
           command: yarn build
+  automerge-lokalise:
+    executor: nodejs
+    steps:
+      - checkout
+      - run: echo "Right before the SSH step"
+      - add_ssh_keys:
+        ssh_keys:
+          fingerprints:
+            - "aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp"
+      - run: echo "Right before the Git command"
+      - run: git --version
