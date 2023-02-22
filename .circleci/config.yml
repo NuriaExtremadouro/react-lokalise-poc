@@ -67,7 +67,7 @@ jobs:
       - persist_to_workspace:
           root: << parameters.workspace >>
           paths:
-            - /node_modules
+            - node_modules
 #  lint:
 #    executor: nodejs
 #    parameters:
