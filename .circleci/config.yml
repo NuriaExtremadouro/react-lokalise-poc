@@ -7,6 +7,7 @@ executors:
   nodejs:
     docker:
       - image: circleci/node:16.10
+    working_directory: /tmp
 
 workflows:
   master:
@@ -60,14 +61,14 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p << parameters.workspace >>
-      - restore_yarn_cache:
-          workspace: << parameters.workspace >>
       - run:
-          name: yarn install
+          name: Install packages
           working_directory: workspaces/<< parameters.workspace >>
           command: yarn install
-      - save_yarn_cache:
-          workspace: << parameters.workspace >>
+      - persist_to_workspace:
+          root: << parameters.workspace >>
+          paths:
+            - /install
 #  lint:
 #    executor: nodejs
 #    parameters:
@@ -90,14 +91,11 @@ jobs:
         type: string
     steps:
       - checkout
-      - restore_yarn_cache:
-          workspace: << parameters.workspace >>
+      - attach_workspace:
+          at: tmp/<< parameters.workspace >>
       - run:
-          name: unit test
-          working_directory: workspaces/<< parameters.workspace >>
+          name: Run unit test
           command: yarn test
-      - save_test_cache:
-          workspace: << parameters.workspace >>
   build:
     executor: nodejs
     parameters:
