@@ -81,6 +81,9 @@ jobs:
     executor: nodejs
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "d1:bd:42:eb:42:ca:cb:8c:2e:9b:21:e6:ad:1e:e0:70"
       - run:
           name: Automerge branch
           command: |
