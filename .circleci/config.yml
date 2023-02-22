@@ -13,34 +13,23 @@ workflows:
     when:
       equal: [ master, << pipeline.git.branch >> ]
     jobs:
-      - install:
-          workspace: workspace
-      #- lint:
-      #    workspace: workspace
+      - install
       - unit-test:
-          workspace: workspace
           requires:
             - install
       - build:
-          workspace: workspace
           requires:
-            #- lint
             - unit-test
   pull-request:
     when:
       not:
         equal: [ master, << pipeline.git.branch >> ]
     jobs:
-      - install:
-          workspace: workspace
-      #- lint
-      #    workspace: workspace
+      - install
       - unit-test:
-          workspace: workspace
           requires:
             - install
       - build:
-          workspace: workspace
           requires:
             #- lint
             - unit-test
@@ -54,9 +43,6 @@ workflows:
 jobs:
   install:
     executor: nodejs
-    parameters:
-      workspace:
-        type: string
     steps:
       - checkout
       - run:
@@ -76,26 +62,8 @@ jobs:
       - run:
           name: Directory after installing
           command: ls
-#  lint:
-#    executor: nodejs
-#    parameters:
-#      workspace:
-#        type: string
-#    steps:
-#      - checkout
-#      - restore_yarn_cache:
-#          workspace: << parameters.workspace >>
-#      - run:
-#          name: lint
-#          working_directory: workspaces/<< parameters.workspace >>
-#          command: yarn lint
-#      - save_lint_cache:
-#          workspace: << parameters.workspace >>
   unit-test:
     executor: nodejs
-    parameters:
-      workspace:
-        type: string
     steps:
       - checkout
       - run:
@@ -113,118 +81,12 @@ jobs:
           command: yarn test
   build:
     executor: nodejs
-    parameters:
-      workspace:
-        type: string
     steps:
       - checkout
-      - restore_yarn_cache:
-          workspace: << parameters.workspace >>
+      - restore_cache:
+          keys:
+          - node_modules-deps-{{ checksum "package.json" }}
+          - node_modules-deps-
       - run:
-          name: build
-          working_directory: workspaces/<< parameters.workspace >>
+          name: Build
           command: yarn build
-      - save_build_cache:
-          workspace: << parameters.workspace >>
-#  deploy:
-#    executor: nodejs
-#    parameters:
-#      workspace:
-#        type: string
-#    steps:
-#      - checkout
-#      - restore_build_cache_fe:
-#          workspace: << parameters.workspace >>
-#      - run:
-#          name: deploy
-#          working_directory: workspaces/<< parameters.workspace >>
-#          command: yarn deploy
-#  automerge:
-#    executor: nodejs
-#    steps:
-#      - checkout
-#      - add_ssh_keys:
-#          ssh_keys:
-#              fingerprints:
-#                - "aa:bb:cc:dd:ee:ff:gg:hh:ii:jj:kk:ll:mm:nn:oo:pp"
-#      - run: ci-automerge
-
-commands:
-  save_yarn_cache:
-    parameters:
-      workspace:
-        type: string
-    steps:
-      - save_cache:
-          name: save node_modules
-          key: yarn-cache-v5-<< parameters.workspace >>-yarn-cache
-          paths:
-            - workspaces/<< parameters.workspace >>/node_modules
-  restore_yarn_cache:
-    parameters:
-      workspace:
-        type: string
-    steps:
-      - restore_cache:
-          name: restore node_modules
-          keys:
-            - yarn-cache-v5-<< parameters.workspace >>-yarn-cache
-  save_build_cache:
-    parameters:
-      workspace:
-        type: string
-    steps:
-      - save_cache:
-          name: save build artifact
-          key: yarn-cache-v5-<< parameters.workspace >>-build
-          paths:
-            - workspaces/<< parameters.workspace >>/build
-            - workspaces/<< parameters.workspace >>/dist
-  restore_build_cache:
-    parameters:
-      workspace:
-        type: string
-    steps:
-      - restore_cache:
-          keys:
-            - yarn-cache-v5-<< parameters.workspace >>-build
-  save_test_cache:
-    parameters:
-      workspace:
-        type: string
-    steps:
-      - persist_to_workspace:
-          name: save test artifacts
-          root: ./
-          paths:
-            - workspaces/<< parameters.workspace >>/coverage-*
-  restore_test_cache:
-    parameters:
-      workspace:
-        type: string
-    steps:
-      - attach_workspace:
-          at: ./
-  save_lint_cache:
-    parameters:
-      workspace:
-        type: string
-    steps:
-      - save_cache:
-          key: lint-cache-v5-<< parameters.workspace >>-lint
-          paths:
-            - workspaces/<< parameters.workspace >>/lint-coverage/lint-report.json
-  restore_lint_cache:
-    parameters:
-      workspace:
-        type: string
-    steps:
-      - restore_cache:
-          keys:
-            - lint-cache-v5-<< parameters.workspace >>-lint
-
-# TODO: might be useful for the commands
-#references:
-#  workspace_param: &workspace_param_ref
-#    workspace:
-#      type: string
