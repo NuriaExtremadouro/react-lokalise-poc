@@ -33,10 +33,10 @@ workflows:
           requires:
             - unit-test
       - automerge-lokalise:
-          #filters:
-          #  branches:
-          #    only:
-          #      - /^lokalise-[\d|\-|_]+$/
+          filters:
+            branches:
+              only:
+                - /^lokalise-[\d|\-|_]+$/
           requires:
             - build
 jobs:
