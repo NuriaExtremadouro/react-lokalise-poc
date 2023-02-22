@@ -1,20 +1,17 @@
-import { useState } from "react";
 import { useIntl } from "react-intl";
 
 const LokalisePage = () => {
   const intl = useIntl();
-  const [formattedNumber, setFormattedNumber] = useState('');
-  const [pluralizationNumber, setPluralizationNumber] = useState('');
 
   return (
     <>
-      <h1>Creating a Lokalise project</h1>
-      <h2>Create project</h2>
-      <h2>Connect to GitHub</h2>
-      <h2>Utilities</h2>
-      <h1>Automation with Lokalise</h1>
-      <h2>Download - Lokalise to GitHub</h2>
-      <h2>Upload - GitHub to Lokalise</h2>
+      <h1>{intl.formatMessage({ id: 'lokalise.createProject.title' })}</h1>
+      <h2>{intl.formatMessage({ id: 'lokalise.createProject.section1' })}</h2>
+      <h2>{intl.formatMessage({ id: 'lokalise.createProject.section2' })}</h2>
+      <h2>{intl.formatMessage({ id: 'lokalise.createProject.section3' })}</h2>
+      <h1>{intl.formatMessage({ id: 'lokalise.automation.title' })}</h1>
+      <h2>{intl.formatMessage({ id: 'lokalise.automation.section1' })}</h2>
+      <h2>{intl.formatMessage({ id: 'lokalise.automation.section1' })}</h2>
     </>
   );
 };

@@ -14,5 +14,12 @@
     "formatPluralization.pluralizationNumber": "You have {n, plural, one {# product} other {# products}}.",
     "tabs.reactIntl": "React Intl",
     "tabs.lokalise": "Lokalise",
-    "tabs.automation": "Automation"
+    "tabs.automation": "Automation",
+    "lokalise.createProject.title": "Creating a Lokalise project",
+    "lokalise.createProject.section1": "Create project",
+    "lokalise.createProject.section2": "Connect to GitHub",
+    "lokalise.createProject.section3": "Utilities",
+    "lokalise.automation.title": "Automation with Lokalise",
+    "lokalise.automation.section1": "Download - Lokalise to GitHub",
+    "lokalise.automation.section2": "Upload - GitHub to Lokalise"
 }
