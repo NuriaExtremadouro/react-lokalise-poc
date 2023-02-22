@@ -86,5 +86,5 @@ jobs:
           command: |
             git checkout master
             git pull origin master
-            git merge add-lokalise-job
+            git merge << pipeline.git.branch >>
             git push origin master
