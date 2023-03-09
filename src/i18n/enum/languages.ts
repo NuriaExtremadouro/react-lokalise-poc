@@ -1,6 +1,6 @@
 export enum Languages {
-  de = 'german',
-  en = 'english',
-  es = 'spanish',
-  fr = 'french',
+  'de-DE' = 'german',
+  'en-GB' = 'english',
+  'es-ES' = 'spanish',
+  'fr-FR' = 'french',
 };

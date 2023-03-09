@@ -15,7 +15,7 @@ export const getCountryFromIp = async () => {
     return response;
   } catch (error) {
     console.log({ error }, 'Error getting country from URL. Defaulting to EN.');
-    return Locales.en;
+    return Locales['en-GB'];
   }
 };
 
@@ -24,16 +24,16 @@ export const getCountryFromIp = async () => {
  */
 export const getAvailableLocales = (country: Locales) => {
   switch (country) { // TODO: add more languages and dialects to showcase
-    case Locales.de:
-      return [Locales.de];
-    case Locales.en:
-      return [Locales.en];
-    case Locales.es:
-      return [Locales.es];
-    case Locales.fr:
-      return [Locales.fr];
+    case Locales['de-DE']:
+      return [Locales['de-DE']];
+    case Locales['en-GB']:
+      return [Locales['en-GB']];
+    case Locales['es-ES']:
+      return [Locales['es-ES']];
+    case Locales['fr-FR']:
+      return [Locales['fr-FR']];
     default:
-      return [Locales.en];
+      return [Locales['en-GB']];
   }
 };
 

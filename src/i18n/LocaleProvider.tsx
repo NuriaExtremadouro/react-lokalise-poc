@@ -1,7 +1,7 @@
 import { createContext, FC, useCallback, useContext, useMemo, useRef, useState } from "react";
 import { createIntl, createIntlCache, IntlFormatters, IntlShape, MessageDescriptor } from "react-intl";
 
-import DefaultDictionary from './dictionaries/en.json';
+import DefaultDictionary from './dictionaries/en-GB.json';
 import { Countries, Currencies, Locales } from "./enum";
 import { getAvailableLocales, getCountryFromIp, getLocale, getLocaleMessages, saveLocale } from "./helpers";
 
@@ -38,7 +38,8 @@ export const useLocale = () => useContext(LocaleContext);
  */
 export const LocaleProvider: FC<LocaleProviderProps> = ({ children }) => {
   // Based on the country where the user accesses from, limit the available languages
-  const userCountry: Locales = getCountryFromIp(); // TODO: make this return a Locale
+  // const userCountry: Locales = getCountryFromIp(); // TODO: make this return a Locale
+  const userCountry: Locales = Locales['es-ES']; // TODO: make this return a Locale
   const availableLocales = getAvailableLocales(userCountry);
 
   // Based on the available languages and the user selection or default values, localize the app
@@ -71,6 +72,8 @@ export const LocaleProvider: FC<LocaleProviderProps> = ({ children }) => {
    * Sets the locale and translations based on user selection
    */
   const setLocale = useCallback(async (selectedLocale: Locales) => {
+    console.log('INSIDE THE SET');
+    console.log(selectedLocale);
     // Set the new selected locale and translations
     const messages = getLocaleMessages(selectedLocale); // TODO: wrap around try-catch and possibly need async for require JSON
     setMessagesAndLocale({
@@ -96,7 +99,7 @@ export const LocaleProvider: FC<LocaleProviderProps> = ({ children }) => {
    * types here and not in the DOP code?
    */
   const formatMessage = useCallback(
-    (descriptor, values, options): string => intl.formatMessage(descriptor, values, options),
+    (descriptor: any, values: any, options: any): string => intl.formatMessage(descriptor, values, options),
     [intl]
   );
 

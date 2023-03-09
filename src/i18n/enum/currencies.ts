@@ -1,6 +1,6 @@
 export enum Currencies {
-  de = 'EUR',
-  en = 'GBP',
-  es = 'EUR',
-  fr = 'EUR',
+  'de-DE' = 'EUR',
+  'en-GB' = 'GBP',
+  'es-ES' = 'EUR',
+  'fr-FR' = 'EUR',
 };

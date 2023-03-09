@@ -1,28 +1,27 @@
 import { useState } from 'react';
-import { IntlProvider, useIntl } from 'react-intl';
 
 import './App.css';
 import { CaretDownIcon, InternationalizationIcon } from './assets/icons';
 import IntlDemoPage from './components/IntlDemoPage/IntlDemoPage';
 import LokalisePage from './components/LokalisePage/LokalisePage';
-import { getLocaleLanguage, getLocaleMessages } from './i18n/helpers';
+import { getLocaleLanguage } from './i18n/helpers';
 import { Locales } from './i18n/enum';
+import { LocaleProvider, useLocale } from './i18n/LocaleProvider';
 
 const App = () => {
-  const intl = useIntl();
-  const getLocale = () => ((localStorage.getItem("locale") || navigator.language) as Locales);
+  const { setLocale } = useLocale();
 
-  const [locale, setLocale] = useState(getLocale());
+  const onLocaleSelected = (newLocale: Locales) => {
+    console.log('SELECTED LOCALE');
+    console.log(newLocale);
+    setLocale(newLocale);
+  }
+
   const [page, setPage] = useState('lokalise');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
 
-  const onLocaleSelected = (newLocale: Locales) => {
-    setLocale(newLocale);
-    localStorage.setItem('locale', newLocale);
-  }
-
   return (
-    <IntlProvider messages={getLocaleMessages(locale)} locale={locale} defaultLocale={Locales.en}>
+    <LocaleProvider>
       <div className="main">
         <nav className='nav'>
           <div className={`nav-element ${page === 'intl' && ' selected'}`} onClick={() => setPage('intl')}>
@@ -45,7 +44,7 @@ const App = () => {
               <div className='language-dropdown'>
                 {Object.keys(Locales).map(key => (
                   <div onClick={() => onLocaleSelected(key as Locales)}>
-                    <p>{intl.formatMessage({ id: `languages.${getLocaleLanguage(key as Locales)}` })}</p>
+                    <p>{`languages.${getLocaleLanguage(key as Locales)}`}</p>
                   </div>
                 ))}
               </div>
@@ -58,7 +57,7 @@ const App = () => {
           {page === 'circleci' && <p>CircleCI page</p>}
         </header>
       </div>
-    </IntlProvider>
+    </LocaleProvider>
   );
 }
 
