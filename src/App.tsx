@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { IntlProvider } from 'react-intl';
+import { IntlProvider, useIntl } from 'react-intl';
 
 import './App.css';
 import { CaretDownIcon, InternationalizationIcon } from './assets/icons';
 import IntlDemoPage from './components/IntlDemoPage/IntlDemoPage';
 import LokalisePage from './components/LokalisePage/LokalisePage';
-import { messages } from './i18n/translations';
-import { Locales } from './i18n/locales';
+import { getLocaleLanguage, getLocaleMessages } from './i18n/helpers';
+import { Locales } from './i18n/enum';
 
 const App = () => {
+  const intl = useIntl();
   const getLocale = () => ((localStorage.getItem("locale") || navigator.language) as Locales);
 
   const [locale, setLocale] = useState(getLocale());
@@ -21,7 +22,7 @@ const App = () => {
   }
 
   return (
-    <IntlProvider messages={messages[locale]} locale={locale} defaultLocale={Locales.English}>
+    <IntlProvider messages={getLocaleMessages(locale)} locale={locale} defaultLocale={Locales.en}>
       <div className="main">
         <nav className='nav'>
           <div className={`nav-element ${page === 'intl' && ' selected'}`} onClick={() => setPage('intl')}>
@@ -42,12 +43,11 @@ const App = () => {
           {
             showLanguageMenu && (
               <div className='language-dropdown'>
-                <div onClick={() => onLocaleSelected('en' as Locales)}>
-                  <p>English</p>
-                </div>
-                <div onClick={() => onLocaleSelected('es' as Locales)}>
-                  <p>Spanish</p>
-                </div>
+                {Object.keys(Locales).map(key => (
+                  <div onClick={() => onLocaleSelected(key as Locales)}>
+                    <p>{intl.formatMessage({ id: `languages.${getLocaleLanguage(key as Locales)}` })}</p>
+                  </div>
+                ))}
               </div>
             )
           }

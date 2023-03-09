@@ -1,4 +1,8 @@
 {
+    "languages.german": "German",
+    "languages.english": "English",
+    "languages.spanish": "Spanish",
+    "languages.french": "French",
     "formatDate.title": "Formatting dates",
     "formatDate.description1": "When we change the language, it also changes the format of the dates. Try changing from English to Spanish and check how it changes from MM\/DD\/YYYY to DD\/MM\/YYYY. Look at the following date:",
     "formatDate.description2": "We could also visualize the date in text format:",
