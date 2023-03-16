@@ -17,16 +17,12 @@
   padding: 20px 20px;
 }
 
-.selected {
-  background-color: #FFFFFF30;
-}
-
 .nav-element > h1 {
   display: inline;
   margin: 20px;
 }
 
-.nav-element:hover, .language-button:hover, .language-dropdown > div:hover {
+.language-button:hover, .language-dropdown > div:hover {
   background-color: #FFFFFF50;
   cursor: pointer;
 }
