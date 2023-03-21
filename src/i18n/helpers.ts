@@ -12,15 +12,15 @@ export const getUserCountry = () => navigator.language as Locales;
 export const getAvailableLocales = (country: Locales) => {
   switch (country) { // TODO: add more languages and dialects to showcase
     case Locales['de-DE']:
-      return [Locales['de-DE']];
+      return [Languages['de-DE']];
     case Locales['en-GB']:
-      return [Locales['en-GB']];
+      return [Languages['en-GB']];
     case Locales['es-ES']:
-      return [Locales['es-ES']];
+      return [Languages['es-ES']];
     case Locales['fr-FR']:
-      return [Locales['fr-FR']];
+      return [Languages['fr-FR']];
     default:
-      return [Locales['en-GB']];
+      return [Languages['en-GB']];
   }
 };
 

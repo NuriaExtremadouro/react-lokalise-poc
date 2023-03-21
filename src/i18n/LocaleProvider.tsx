@@ -2,13 +2,14 @@ import { createContext, FC, useCallback, useContext, useMemo, useRef, useState }
 import { createIntl, createIntlCache, IntlFormatters, IntlShape, MessageDescriptor } from "react-intl";
 
 import DefaultDictionary from './dictionaries/en-GB.json';
-import { Countries, Currencies, Locales } from "./enum";
+import { Countries, Currencies, Languages, Locales } from "./enum";
 import { getAvailableLocales, getLocale, getLocaleMessages, getUserCountry, saveLocale } from "./helpers";
 
 /**
  * Interface of our localization component state
  */
 interface ILocaleContext extends Omit<IntlShape, 'formatMessage'> { // TODO: how does this Omit work?
+  availableLanguages: Languages[];
   country: Countries;
   currency: Currencies;
   locale: Locales;
@@ -39,7 +40,7 @@ export const useLocale = () => useContext(LocaleContext);
 export const LocaleProvider: FC<LocaleProviderProps> = ({ children }) => {
   // Based on the country where the user accesses from, limit the available languages
   const userCountry: Locales = getUserCountry();
-  const availableLocales = getAvailableLocales(userCountry);
+  const availableLanguages = getAvailableLocales(userCountry);
 
   // Based on the available languages and the user selection or default values, localize the app
   const cache = useRef(createIntlCache()); // TODO: what does this do?
@@ -124,11 +125,12 @@ export const LocaleProvider: FC<LocaleProviderProps> = ({ children }) => {
       formatMessage,
       formatPrice,
       setLocale,
+      availableLanguages,
       country,
       currency,
       locale,
     }),
-    [country, currency, intl, formatMessage, formatPrice, locale, setLocale],
+    [availableLanguages, country, currency, intl, formatMessage, formatPrice, locale, setLocale],
   );
 
   return (<LocaleContext.Provider value={state}>{children}</LocaleContext.Provider>);
