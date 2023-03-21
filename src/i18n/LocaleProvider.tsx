@@ -3,7 +3,7 @@ import { createIntl, createIntlCache, IntlFormatters, IntlShape, MessageDescript
 
 import DefaultDictionary from './dictionaries/en-GB.json';
 import { Countries, Currencies, Locales } from "./enum";
-import { getAvailableLocales, getCountryFromIp, getLocale, getLocaleMessages, saveLocale } from "./helpers";
+import { getAvailableLocales, getLocale, getLocaleMessages, getUserCountry, saveLocale } from "./helpers";
 
 /**
  * Interface of our localization component state
@@ -38,8 +38,7 @@ export const useLocale = () => useContext(LocaleContext);
  */
 export const LocaleProvider: FC<LocaleProviderProps> = ({ children }) => {
   // Based on the country where the user accesses from, limit the available languages
-  // const userCountry: Locales = getCountryFromIp(); // TODO: make this return a Locale
-  const userCountry: Locales = Locales['es-ES']; // TODO: make this return a Locale
+  const userCountry: Locales = getUserCountry();
   const availableLocales = getAvailableLocales(userCountry);
 
   // Based on the available languages and the user selection or default values, localize the app
@@ -72,8 +71,6 @@ export const LocaleProvider: FC<LocaleProviderProps> = ({ children }) => {
    * Sets the locale and translations based on user selection
    */
   const setLocale = useCallback(async (selectedLocale: Locales) => {
-    console.log('INSIDE THE SET');
-    console.log(selectedLocale);
     // Set the new selected locale and translations
     const messages = getLocaleMessages(selectedLocale); // TODO: wrap around try-catch and possibly need async for require JSON
     setMessagesAndLocale({

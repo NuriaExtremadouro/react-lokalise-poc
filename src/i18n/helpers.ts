@@ -1,23 +1,10 @@
 import { Countries, Currencies, Languages, Locales } from "./enum";
 
 /**
- * Gets the country from which the user is accessing based on the IP. We could also use other
- * sources such as the URL or the user data.
- * 
- * Note: the API I'm calling in this method returns much more than the country (languages, locale,
- * currency, etc.) in case we wanted to go directly with that instead of implementing our own
- * handlers.
+ * Gets the country from which the user is accessing. Ideally, we would have something like user
+ * data or geolocation for this. Here I'm just picking the locale from the browser for a demo.
  */
-export const getCountryFromIp = async () => {
-  try {
-    const response = await fetch('https://ipapi.co/json/');
-    console.log(response); // TODO: check format
-    return response;
-  } catch (error) {
-    console.log({ error }, 'Error getting country from URL. Defaulting to EN.');
-    return Locales['en-GB'];
-  }
-};
+export const getUserCountry = () => navigator.language as Locales;
 
 /**
  * Gets the locales available for selection based on the country where the user is accessing.
