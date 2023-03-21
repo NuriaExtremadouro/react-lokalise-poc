@@ -11,6 +11,7 @@ const Menu: React.FC = () => {
 
   const onLocaleSelected = (newLocale: Locales) => {
     setLocale(newLocale);
+    setShowLanguageMenu(false);
   }
 
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
