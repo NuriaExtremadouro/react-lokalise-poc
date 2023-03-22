@@ -4,20 +4,20 @@ import { Countries, Currencies, Languages, Locales } from "./enum";
  * Gets the country from which the user is accessing. Ideally, we would have something like user
  * data or geolocation for this. Here I'm just picking the locale from the browser for a demo.
  */
-export const getUserCountry = () => navigator.language as Locales;
+export const getUserCountry = () => Countries[navigator.language as Locales];
 
 /**
  * Gets the locales available for selection based on the country where the user is accessing.
  */
-export const getAvailableLocales = (country: Locales) => {
+export const getAvailableLocales = (country: Countries) => {
   switch (country) { // TODO: add more languages and dialects to showcase
-    case Locales['de-DE']:
+    case Countries['de-DE']:
       return [Languages['de-DE']];
-    case Locales['en-GB']:
+    case Countries['en-GB']:
       return [Languages['en-GB']];
-    case Locales['es-ES']:
+    case Countries['es-ES']:
       return [Languages['es-ES']];
-    case Locales['fr-FR']:
+    case Countries['fr-FR']:
       return [Languages['fr-FR']];
     default:
       return [Languages['en-GB']];

@@ -39,7 +39,7 @@ export const useLocale = () => useContext(LocaleContext);
  */
 export const LocaleProvider: FC<LocaleProviderProps> = ({ children }) => {
   // Based on the country where the user accesses from, limit the available languages
-  const userCountry: Locales = getUserCountry();
+  const userCountry: Countries = getUserCountry();
   const availableLanguages = getAvailableLocales(userCountry);
 
   // Based on the available languages and the user selection or default values, localize the app
@@ -56,14 +56,14 @@ export const LocaleProvider: FC<LocaleProviderProps> = ({ children }) => {
 
   // Set the country
   const country = useMemo(
-    () => Countries[userCountry],
+    () => userCountry,
     [userCountry],
   );
 
   // Set the currency
   const currency = useMemo( // TODO: why is this a memo? Because it won't change?
-    () => Currencies[userCountry],
-    [userCountry],
+    () => Currencies[locale],
+    [locale],
   );
 
   // Offer our own customized react-intl methods
